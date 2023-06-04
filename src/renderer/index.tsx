@@ -1,6 +1,11 @@
 import { createRoot } from 'react-dom/client';
 import App from './App';
 
+import './styles/main.scss';
+import './views/views.scss';
+import './components/common/common.scss';
+import './containers/index.scss';
+
 const container = document.getElementById('root') as HTMLElement;
 const root = createRoot(container);
 root.render(<App />);

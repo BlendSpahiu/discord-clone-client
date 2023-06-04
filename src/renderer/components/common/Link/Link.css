@@ -1,0 +1,12 @@
+.link {
+  display: block;
+  color: #0a8fd2;
+  font-size: 14px;
+  text-decoration: none;
+}
+
+.link:visited {
+  color: #0a8fd2;
+  font-size: 14px;
+  text-decoration: none;
+}

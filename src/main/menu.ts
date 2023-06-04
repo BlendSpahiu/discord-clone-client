@@ -224,6 +224,13 @@ export default class MenuBuilder {
                   },
                 },
                 {
+                  label: '&Back',
+                  accelerator: 'Ctrl+B',
+                  click: () => {
+                    this.mainWindow.webContents.goBack();
+                  },
+                },
+                {
                   label: 'Toggle &Full Screen',
                   accelerator: 'F11',
                   click: () => {

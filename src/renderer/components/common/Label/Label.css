@@ -1,0 +1,8 @@
+.label {
+  text-transform: uppercase;
+  font-weight: 600;
+  color: #b5bac1;
+  margin-bottom: 4px;
+  font-size: 12px;
+  letter-spacing: 0.5px;
+}
