@@ -1,23 +1,24 @@
 import { ReactElement, useRef, useState } from 'react';
-import { Container } from '../../components/common/Container/Container';
-import { InputGroup } from '../../components/common/Input/InputGroup';
 import { useForm } from 'react-hook-form';
-import { RegisterModel } from '../../interfaces/interfaces/Register.props';
-import { Form } from '../../components/common/Form/Form';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { joiResolver } from '@hookform/resolvers/joi';
+import { signUp } from '../../api/auth/auth';
 import { Label, Typography } from '../../components';
 import { Button } from '../../components/common/Button/Button';
-import { months, days, years } from '../../static/date/date';
-import { joiResolver } from '@hookform/resolvers/joi';
-import { RegisterValidator } from '../../validators/Auth/Auth.validator';
-import { FieldError } from '../../components/common/Forms/FieldError/FieldError';
+import { Container } from '../../components/common/Container/Container';
 import { Dropdown } from '../../components/common/Dropdown/Dropdown';
-import { useLocation, useNavigate } from 'react-router-dom';
 import { DropdownItem } from '../../components/common/Dropdown/DropdownItem';
 import { DropdownMenu } from '../../components/common/Dropdown/DropdownMenu';
 import { DropdownTrigger } from '../../components/common/Dropdown/DropdownTrigger';
-import { signUp } from '../../api/auth/auth';
+import { Form } from '../../components/common/Form/Form';
+import { FieldError } from '../../components/common/Forms/FieldError/FieldError';
+import { InputGroup } from '../../components/common/Input/InputGroup';
 import { Link } from '../../components/common/Link/Link';
 import { useToast } from '../../hooks/useToast/useToast';
+import { RegisterModel } from '../../interfaces/interfaces/Register.props';
+import { AuthResponseModel } from '../../interfaces/models/Response.model';
+import { days, months, years } from '../../static/date/date';
+import { RegisterValidator } from '../../validators/Auth/Auth.validator';
 
 export const Register = (): ReactElement => {
   const [dayOfBirth, setDayOfBirth] = useState<string>('');
@@ -85,7 +86,11 @@ export const Register = (): ReactElement => {
       return;
     }
 
-    localStorage.setItem('access_token', res.token);
+    localStorage.setItem('access_token', (res as AuthResponseModel).token);
+    localStorage.setItem(
+      'access_token',
+      (res as AuthResponseModel).user.id.toString()
+    );
     navigate('/main');
   };
 

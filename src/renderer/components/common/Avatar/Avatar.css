@@ -1,0 +1,13 @@
+.avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid transparent;
+  border-radius: 50%;
+  background: #313338;
+  width: 56px;
+  height: 56px;
+}
+
+.avatar-selected {
+}

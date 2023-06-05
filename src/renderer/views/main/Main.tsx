@@ -1,6 +1,6 @@
 import { ReactElement } from 'react';
-import { Sidebar } from '../../containers';
 import { Button } from '../../components/common/Button/Button';
+import { Sidebar } from '../../containers';
 import { useAuth } from '../../hooks/useAuth/useAuth';
 
 export const Main = (): ReactElement => {
