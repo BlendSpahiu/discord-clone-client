@@ -4,10 +4,24 @@
   justify-content: center;
   border: 1px solid transparent;
   border-radius: 50%;
-  background: #313338;
+  background-color: #313338;
   width: 56px;
   height: 56px;
+  margin: 12px 12px;
 }
 
 .avatar-selected {
+  border-radius: 30% !important;
+  background-color: #5865f2 !important;
+}
+
+.avatar-hovering {
+  width: 4px;
+  height: 25px;
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+  border-top-right-radius: 6px;
+  border-bottom-right-radius: 6px;
+  background: #fff;
+  position: absolute;
 }

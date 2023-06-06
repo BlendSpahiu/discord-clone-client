@@ -1,9 +1,13 @@
 .sidebar {
   background: #1e1f22;
-  padding: 12px 16px;
   color: white;
 }
 
 .sidebar > * + * {
   margin-top: 12px;
+}
+
+.sidebar-avatar-container {
+  display: flex;
+  align-items: center;
 }

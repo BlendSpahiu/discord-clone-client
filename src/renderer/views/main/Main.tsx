@@ -9,7 +9,10 @@ export const Main = (): ReactElement => {
   return (
     <div className="main">
       <Sidebar />
-      <Button onClick={logout}>Logout</Button>
+      <div>
+        <p>test</p>
+        {/* <Button onClick={logout}>Logout</Button> */}
+      </div>
     </div>
   );
 };
