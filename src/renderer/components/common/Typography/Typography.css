@@ -2,6 +2,10 @@
   color: white;
 }
 
+.size-xs {
+  font-size: 12px;
+}
+
 .size-sm {
   font-size: 14px;
 }

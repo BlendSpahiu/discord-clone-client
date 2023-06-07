@@ -24,11 +24,12 @@
   width: 100%;
   display: flex;
   height: fit-content;
+  justify-content: space-between;
 }
 
 .direct-messages-conversations {
   display: flex;
-  flex-direction: column;
+  align-items: center;
   background: #2b2d31;
 }
 
@@ -45,4 +46,18 @@
   border: none;
   border-radius: 6px;
   padding: 4px 8px;
+}
+
+.dm-header-icons {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.dm-header-icons > * + * {
+  margin-left: 16px;
+}
+
+.dm-header-icons > svg {
+  cursor: pointer;
 }

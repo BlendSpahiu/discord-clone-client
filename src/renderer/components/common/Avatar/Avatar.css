@@ -10,6 +10,26 @@
   margin: 12px 12px;
 }
 
+.avatar-xs {
+  width: 16px;
+  height: 16px;
+}
+
+.avatar-sm {
+  width: 24px;
+  height: 24px;
+}
+
+.avatar-md {
+  width: 32px;
+  height: 32px;
+}
+
+.avatar-lg {
+  width: 42px;
+  height: 42px;
+}
+
 .avatar-selected {
   border-radius: 30% !important;
   background-color: #5865f2 !important;
@@ -30,5 +50,15 @@
   position: absolute;
 }
 
-.avatar:active {
+.avatar-non-interactable-container {
+  display: flex;
+  align-items: center;
+}
+
+.avatar-non-interactable-container > * + * {
+  margin-right: 8px;
+}
+
+.avatar-non-interactable {
+  border: 1px solid gray;
 }
