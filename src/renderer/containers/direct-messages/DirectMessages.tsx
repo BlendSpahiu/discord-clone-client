@@ -1,9 +1,15 @@
 import { ReactElement } from 'react';
+import { DirectMessagesConversation } from './DirectMessagesConversations/DirectMessagesConversations';
 import { DirectMessagesProps } from './DirectMessages.props';
+import { DirectMessagesHeader } from './DirectMessagesHeader';
 
 export const DirectMessages = ({
-  children,
   ...rest
 }: DirectMessagesProps): ReactElement => {
-  return <div>DM's</div>;
+  return (
+    <>
+      <DirectMessagesHeader />
+      <DirectMessagesConversation />
+    </>
+  );
 };

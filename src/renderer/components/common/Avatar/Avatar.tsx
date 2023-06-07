@@ -1,4 +1,4 @@
-import { ReactElement, useState } from 'react';
+import { ReactElement } from 'react';
 import classNames from 'classnames';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Typography } from '../Typography/Typography';
@@ -10,8 +10,6 @@ export const Avatar = ({
   selected,
   ...rest
 }: AvatarProps): ReactElement => {
-  const [isHovering, setIsHovering] = useState<boolean>(false);
-
   const getServerAbbreviation = () => {
     let abbr = '';
 
@@ -22,45 +20,41 @@ export const Avatar = ({
     return abbr;
   };
 
-  console.log(isHovering);
-
   return (
-    <div className="sidebar-avatar-container">
-      <AnimatePresence>
-        <motion.div
-          layout
-          transition={{ ease: 'easeInOut', duration: 0.2 }}
-          exit={{ height: 0, width: 0 }}
-          className={classNames(
-            selected ? 'direct-messages-selected' : '',
-            isHovering ? 'avatar-hovering' : ''
-          )}
-        />
-        <motion.div
-          layout
-          whileHover={{
-            ...(!selected && {
-              // border: '1px solid transparent',
-              borderRadius: '30%',
-              backgroundColor: '#5865f2',
-            }),
-          }}
-          exit={{ borderRadius: '50%' }}
-          transition={{ ease: 'easeInOut', duration: 0.1 }}
-          className={classNames(
-            'avatar',
-            selected ? 'avatar-selected' : '',
-            className
-          )}
-          onHoverStart={() => setIsHovering(true)}
-          onHoverEnd={() => setIsHovering(false)}
-          {...rest}
-        >
-          {serverName && (
+    <AnimatePresence>
+      <motion.div
+        layout
+        whileHover={{
+          ...(!selected && {
+            boxShadow: '4px 0px 0px gray inset',
+          }),
+        }}
+        transition={{ ease: 'easeInOut', duration: 0.1 }}
+        className={classNames(selected ? 'avatar-container-selected' : '')}
+        {...rest}
+      >
+        {serverName && (
+          <motion.div
+            whileHover={{
+              ...(!selected && {
+                borderRadius: '30%',
+                backgroundColor: '#5865f2',
+              }),
+            }}
+            whileTap={{
+              y: 4,
+            }}
+            transition={{ ease: 'easeInOut', duration: 0.1 }}
+            className={classNames(
+              'avatar',
+              selected ? 'avatar-selected' : '',
+              className
+            )}
+          >
             <Typography as="p">{getServerAbbreviation()}</Typography>
-          )}
-        </motion.div>
-      </AnimatePresence>
-    </div>
+          </motion.div>
+        )}
+      </motion.div>
+    </AnimatePresence>
   );
 };

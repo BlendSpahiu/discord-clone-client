@@ -1,14 +1,16 @@
-import { ReactElement, useState } from 'react';
+import { ReactElement } from 'react';
+import classNames from 'classnames';
+import { Container } from '../../components';
 import { Avatar } from '../../components/common/Avatar/Avatar';
 import { SidebarProps } from './Sidebar.props';
-import { DirectMessagesAvatar } from '../direct-messages/DirectMessagesAvatar';
-import classNames from 'classnames';
-import { AnimatePresence } from 'framer-motion';
 
-export const Sidebar = ({ children, ...rest }: SidebarProps): ReactElement => {
-  const [selected, setSelected] = useState<number>(0);
-
-  const handleSetSelected = (value: number) => () => setSelected(value);
+export const Sidebar = ({
+  setActiveConversation,
+  activeConversation,
+  ...rest
+}: SidebarProps): ReactElement => {
+  const handleSetSelected = (value: number) => () =>
+    setActiveConversation(value);
 
   const MOCK_SERVERS = [
     { id: 1, name: 'test1 test' },
@@ -19,25 +21,27 @@ export const Sidebar = ({ children, ...rest }: SidebarProps): ReactElement => {
     { id: 6, name: 'test6' },
   ];
 
-  console.log(selected);
+  console.log(activeConversation);
 
   return (
     <div className={classNames('sidebar')} {...rest}>
       <Avatar
         onClick={handleSetSelected(0)}
-        selected={selected === 0}
+        selected={activeConversation === 0}
         className={classNames('direct-messages-avatar')}
         serverName={'Direct Messages'}
       />
       <div className="direct-messages-divider" />
-      {MOCK_SERVERS.map((server) => (
-        <Avatar
-          key={server.id}
-          onClick={handleSetSelected(server.id)}
-          selected={selected === server.id}
-          serverName={server.name}
-        />
-      ))}
+      <Container spacing="none" className="servers">
+        {MOCK_SERVERS.map((server) => (
+          <Avatar
+            key={server.id}
+            onClick={handleSetSelected(server.id)}
+            selected={activeConversation === server.id}
+            serverName={server.name}
+          />
+        ))}
+      </Container>
     </div>
   );
 };

@@ -17,3 +17,32 @@
   background: #fff;
   position: absolute;
 }
+
+.direct-messages-header {
+  background: #313338;
+  /* padding: 8px 0px; */
+  width: 100%;
+  display: flex;
+  height: fit-content;
+}
+
+.direct-messages-conversations {
+  display: flex;
+  flex-direction: column;
+  background: #2b2d31;
+}
+
+.direct-messages-conversations-input {
+  padding: 12px;
+  border-bottom: 1px solid #1e1f22;
+}
+
+.direct-messages-conversations-input > input {
+  background: #1e1f22;
+  color: #949ba4;
+  font-size: 14px;
+  font-weight: 500;
+  border: none;
+  border-radius: 6px;
+  padding: 4px 8px;
+}
