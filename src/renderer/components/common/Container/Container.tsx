@@ -16,6 +16,7 @@ export const Container = ({
   className,
   styling = true,
   animatePresence = false,
+  alignItems,
   ...rest
 }: ContainerProps): ReactElement => {
   return (
@@ -33,6 +34,7 @@ export const Container = ({
               spaceBetween
                 ? `space-between-${spaceDirection}-${spaceBetween}`
                 : '',
+              alignItems ? `align-items-${alignItems}` : '',
               className
             )}
             {...rest}
@@ -54,6 +56,8 @@ export const Container = ({
             spaceBetween
               ? `space-between-${spaceDirection}-${spaceBetween}`
               : '',
+            alignItems ? `align-items-${alignItems}` : '',
+
             className
           )}
           {...rest}

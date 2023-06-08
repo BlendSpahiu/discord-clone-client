@@ -45,7 +45,7 @@
   font-weight: 500;
   border: none;
   border-radius: 6px;
-  padding: 4px 8px;
+  padding: 4px 24px 4px 8px;
 }
 
 .dm-header-icons {
@@ -58,6 +58,31 @@
   margin-left: 16px;
 }
 
+.dm-header-icons:last-child {
+  margin-right: 16px;
+}
+
 .dm-header-icons > svg {
   cursor: pointer;
+}
+
+.dm-header-icons-search {
+  background: #1e1f22;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 4px;
+}
+
+.dm-header-icons-search > input {
+  width: 140px;
+  background: transparent;
+  border: none;
+  color: gray;
+  padding: 2px 0px 2px 12px;
+  font-size: 14px;
+}
+
+.dm-header-icons-search > input:focus {
+  outline: none;
 }

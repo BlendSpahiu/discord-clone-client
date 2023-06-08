@@ -1,0 +1,6 @@
+.conversations-sidebar {
+  width: 255px;
+  background: #2b2d31;
+  display: flex;
+  flex-direction: column;
+}

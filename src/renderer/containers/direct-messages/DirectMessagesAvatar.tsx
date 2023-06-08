@@ -1,6 +1,6 @@
 import { ReactElement } from 'react';
-import { Avatar } from '../../components/common/Avatar/Avatar';
 import classNames from 'classnames';
+import { Avatar } from '../../components/common/Avatar/Avatar';
 
 export const DirectMessagesAvatar = ({
   className,

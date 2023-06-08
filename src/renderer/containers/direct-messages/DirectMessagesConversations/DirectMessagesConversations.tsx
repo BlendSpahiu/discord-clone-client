@@ -4,8 +4,8 @@ import classNames from 'classnames';
 
 export const DirectMessagesConversation = (): ReactElement => {
   return (
-    <motion.div
-      className={classNames('direct-messages-conversations')}
-    ></motion.div>
+    <motion.div className={classNames('direct-messages-conversations')}>
+      test
+    </motion.div>
   );
 };

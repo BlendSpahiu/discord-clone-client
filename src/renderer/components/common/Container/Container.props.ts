@@ -12,6 +12,16 @@ type JustifyContent =
   | 'space-around'
   | 'space-evenly';
 type Spacing = 'sm' | 'md' | 'lg' | 'xl' | 'none';
+type AlignItems =
+  | 'center'
+  | 'start'
+  | 'end'
+  | 'flex-start'
+  | 'flex-end'
+  | 'stretch'
+  | 'revert'
+  | 'self-end'
+  | 'self-start';
 
 export interface ContainerProps extends HTMLMotionProps<'div'> {
   size?: Size;
@@ -24,4 +34,5 @@ export interface ContainerProps extends HTMLMotionProps<'div'> {
   justifyContent?: JustifyContent;
   animatePresence?: boolean;
   condition?: boolean;
+  alignItems?: AlignItems;
 }

@@ -1,8 +1,8 @@
 import { ReactElement, useEffect, useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 import { DirectMessagesConversation } from './DirectMessagesConversations/DirectMessagesConversations';
 import { DirectMessagesProps } from './DirectMessages.props';
-import { DirectMessagesHeader } from './DirectMessagesHeader';
-import { AnimatePresence, motion } from 'framer-motion';
+import { Header } from '../header/Header';
 
 export const DirectMessages = ({
   ...rest
@@ -21,7 +21,6 @@ export const DirectMessages = ({
         }}
         style={{ width: '100%' }}
       >
-        <DirectMessagesHeader />
         <DirectMessagesConversation />
       </motion.div>
     </AnimatePresence>

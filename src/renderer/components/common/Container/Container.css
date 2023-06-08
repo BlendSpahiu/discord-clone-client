@@ -110,3 +110,31 @@
 .space-between-y-xl > * + * {
   margin-top: 32px;
 }
+
+.align-items-center {
+  align-items: center;
+}
+
+.align-items-end {
+  align-items: end;
+}
+
+.align-items-start {
+  align-items: start;
+}
+
+.align-items-flex-end {
+  align-items: flex-end;
+}
+
+.align-items-flex-start {
+  align-items: flex-start;
+}
+
+.align-items-stretch {
+  align-items: stretch;
+}
+
+.align-items-reverse {
+  align-items: reverse;
+}

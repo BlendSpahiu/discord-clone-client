@@ -1,10 +1,10 @@
 import { ReactElement } from 'react';
 import classNames from 'classnames';
 import { AnimatePresence, motion } from 'framer-motion';
+import { Badge } from '../Badge/Badge';
+import { If } from '../Conditions/If';
 import { Typography } from '../Typography/Typography';
 import { AvatarProps } from './Avatar.props';
-import { If } from '../Conditions/If';
-import { Badge } from '../Badge/Badge';
 
 export const Avatar = ({
   serverName,
@@ -14,6 +14,9 @@ export const Avatar = ({
   size,
   nickname,
   username,
+  isProfile,
+  userStatus,
+  avatarStyles,
   ...rest
 }: AvatarProps): ReactElement => {
   const getServerAbbreviation = () => {
@@ -65,10 +68,31 @@ export const Avatar = ({
               size ? `avatar-${size}` : '',
               className
             )}
+            style={avatarStyles}
           >
             <Typography as="p" size={!interactable ? 'xs' : 'base'}>
               {getServerAbbreviation()}
             </Typography>
+            <If condition={isProfile ?? false}>
+              <motion.div
+                className={classNames(
+                  'avatar-user-status',
+                  userStatus ? `avatar-user-status-${userStatus}` : ''
+                )}
+              >
+                <motion.div
+                  style={{
+                    width: 12,
+                    height: 12,
+                    top: 0,
+                    left: 0,
+                    borderRadius: '50%',
+                    position: 'absolute',
+                    background: '#232428',
+                  }}
+                />
+              </motion.div>
+            </If>
           </motion.div>
         )}
         <If condition={!interactable}>

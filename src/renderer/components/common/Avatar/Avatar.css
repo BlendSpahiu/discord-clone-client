@@ -30,6 +30,11 @@
   height: 42px;
 }
 
+.avatar-HUMONGOUS {
+  width: 78px;
+  height: 78px;
+}
+
 .avatar-selected {
   border-radius: 30% !important;
   background-color: #5865f2 !important;
@@ -61,4 +66,18 @@
 
 .avatar-non-interactable {
   border: 1px solid gray;
+}
+
+.avatar-user-status {
+  position: absolute;
+  border-radius: 50%;
+  padding: 10px;
+  left: 55px;
+  background: inherit;
+  bottom: 4px;
+  border: 5px solid #232428;
+}
+
+.avatar-user-status-away {
+  background: #eca600;
 }
