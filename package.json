@@ -25,7 +25,8 @@
     "start:main": "cross-env NODE_ENV=development electronmon -r ts-node/register/transpile-only .",
     "start:preload": "cross-env NODE_ENV=development TS_NODE_TRANSPILE_ONLY=true webpack --config ./.erb/configs/webpack.config.preload.dev.ts",
     "start:renderer": "cross-env NODE_ENV=development TS_NODE_TRANSPILE_ONLY=true webpack serve --config ./.erb/configs/webpack.config.renderer.dev.ts",
-    "test": "jest"
+    "test": "jest",
+    "codegen": "graphql-codegen --config codegen.js -r dotenv/config"
   },
   "browserslist": [],
   "prettier": {
@@ -75,6 +76,11 @@
     }
   },
   "dependencies": {
+    "@apollo/client": "^3.7.15",
+    "@graphql-codegen/introspection": "^4.0.0",
+    "@graphql-codegen/typescript": "^4.0.0",
+    "@graphql-codegen/typescript-operations": "^4.0.0",
+    "@graphql-codegen/typescript-react-apollo": "^3.3.7",
     "@heroicons/react": "^2.0.18",
     "@hookform/resolvers": "^3.1.0",
     "axios": "^1.4.0",
@@ -87,17 +93,21 @@
     "electron-updater": "^5.3.0",
     "eslint-plugin-simple-import-sort": "^10.0.0",
     "framer-motion": "^10.12.13",
+    "graphql": "^16.6.0",
     "html-loader": "^4.2.0",
     "joi": "^17.9.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.44.2",
     "react-query": "^3.39.3",
-    "react-router-dom": "^6.11.2"
+    "react-router-dom": "^6.11.2",
+    "subscriptions-transport-ws": "^0.11.0"
   },
   "devDependencies": {
     "@electron/notarize": "^1.2.3",
     "@electron/rebuild": "^3.2.10",
+    "@graphql-codegen/cli": "^4.0.1",
+    "@graphql-codegen/client-preset": "^4.0.0",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.10",
     "@svgr/webpack": "^7.0.0",
     "@teamsupercell/typings-for-css-modules-loader": "^2.5.2",

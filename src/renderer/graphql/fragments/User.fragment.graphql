@@ -1,0 +1,10 @@
+fragment UserFragment on users {
+  id
+  username
+  nickname
+  role
+  tag
+  email
+  date_of_birth
+  created_at
+}
