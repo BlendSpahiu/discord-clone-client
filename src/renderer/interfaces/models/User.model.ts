@@ -3,13 +3,13 @@ import { UserRolesEnums } from '../../enums/user/UserRoles.enums';
 export interface UserModel {
   id: number;
   email: number;
-  phoneNumber: string;
+  phone_number: string;
   isDisabled: boolean;
   tag: number;
-  role: UserRolesEnums;
+  server_role: UserRolesEnums;
   username: string;
   friends: string[];
-  dateOfBirth: string;
+  date_of_birth: string;
   created_at: Date;
   updated_at: Date;
 }

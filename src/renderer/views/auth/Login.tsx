@@ -2,12 +2,14 @@ import { ReactElement } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { joiResolver } from '@hookform/resolvers/joi';
-import { login } from '../../api/auth/auth';
+import jwtDecode from 'jwt-decode';
 import { Container, InputGroup, Typography } from '../../components';
 import { Button } from '../../components/common/Button/Button';
 import { Form } from '../../components/common/Form/Form';
 import { Link } from '../../components/common/Link/Link';
+import { Loader } from '../../components/common/Loader/Loader';
 import { ToastrEnums } from '../../enums/toaster/Toaster.enums';
+import { useLoginMutation } from '../../graphql/gen/graphql';
 import { useToast } from '../../hooks/useToast/useToast';
 import { LoginModel } from '../../interfaces/interfaces/Login.props';
 import { AuthResponseModel } from '../../interfaces/models/Response.model';
@@ -26,23 +28,28 @@ export const Login = (): ReactElement => {
     resolver: joiResolver(LoginValidator()),
   });
 
-  const onSubmit = async (data: LoginModel) => {
-    const res = await login(data);
+  const [login, { loading }] = useLoginMutation({
+    onCompleted: ({ login }) => {
+      const decoded = jwtDecode(login?.token || '');
+      localStorage.setItem('access_token', login?.token || '');
 
-    if (!res.statusIsOk) {
+      localStorage.setItem(
+        'user_id',
+        (decoded as { [k: string]: string }).user_id
+      );
+      navigate('/main');
+    },
+    onError: (error) => {
       addToast({
         type: ToastrEnums.ERROR,
         title: 'Login Error',
-        description: res.statusMessage,
+        description: error.message,
       });
-      return;
-    }
-    localStorage.setItem('access_token', (res as AuthResponseModel).token);
-    localStorage.setItem(
-      'user_id',
-      (res as AuthResponseModel).user.id.toString()
-    );
-    navigate('/main');
+    },
+  });
+
+  const onSubmit = async (data: LoginModel) => {
+    login({ variables: { email: data.email, password: data.password } });
   };
 
   document.body.classList.add('bg-image');
@@ -112,7 +119,7 @@ export const Login = (): ReactElement => {
         <Link to="#" style={{ marginTop: 12 }}>
           Forgot your password?
         </Link>
-        <Button type="submit" style={{ marginTop: 24 }}>
+        <Button loading={loading} type="submit" style={{ marginTop: 24 }}>
           Log In
         </Button>
         <Typography as="p" style={{ display: 'flex', marginTop: 12 }} helpText>

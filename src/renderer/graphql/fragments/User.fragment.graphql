@@ -1,10 +1,13 @@
-fragment UserFragment on users {
+fragment User on users {
   id
   username
   nickname
-  role
+  server_role
   tag
   email
+  phone_number
   date_of_birth
   created_at
+  isDisabled
+  updated_at
 }

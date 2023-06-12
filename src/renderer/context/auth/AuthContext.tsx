@@ -7,16 +7,14 @@ import {
 } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ToastrEnums } from '../../enums/toaster/Toaster.enums';
+import { useGetMeLazyQuery, UserFragment } from '../../graphql/gen/graphql';
 import { useToast } from '../../hooks/useToast/useToast';
-import { AuthResponseModel } from '../../interfaces/models/Response.model';
-import { UserModel } from '../../interfaces/models/User.model';
 import { Nullable } from '../../interfaces/types/Nullable';
-import { useGetMe } from '../../rq/hooks/useGetMe';
-import { errorResponse } from '../../utils/responses/errorResponse';
 import { AuthContextProps } from './AuthContext.props';
 
 export const AuthContext = createContext<AuthContextProps>({
   user: null,
+  loading: false,
   logout: () => null,
 });
 
@@ -25,7 +23,8 @@ export const AuthProvider = ({
 }: {
   children: ReactNode;
 }): ReactElement => {
-  const [user, setUser] = useState<Nullable<UserModel>>(null);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [user, setUser] = useState<Nullable<UserFragment>>(null);
 
   const { addToast } = useToast();
   const navigate = useNavigate();
@@ -36,23 +35,29 @@ export const AuthProvider = ({
   };
 
   const userId = localStorage.getItem('user_id');
-  const { data, error } = useGetMe(Number(userId) || 0);
-
-  useLayoutEffect(() => {
-    if (error) {
+  const [getAuthUser, { loading: gqlLoading }] = useGetMeLazyQuery({
+    onError: (error) => {
       addToast({
         title: 'Something went wrong.',
         type: ToastrEnums.ERROR,
-        description: errorResponse(error).statusMessage,
+        description: error.message,
       });
       navigate('/auth/login');
-      return;
-    }
-    setUser((data as AuthResponseModel)?.user);
+    },
+    onCompleted: (data) => {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      setUser(data?.users_by_pk);
+    },
+    variables: { id: Number(userId) },
+  });
+
+  useLayoutEffect(() => {
+    getAuthUser();
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, logout }}>
+    <AuthContext.Provider value={{ user, logout, loading }}>
       {children}
     </AuthContext.Provider>
   );

@@ -1,0 +1,9 @@
+mutation register($obj: RegisterInput!) {
+  register(obj: $obj) {
+    statusCode
+    statusIsOk
+    statusMessage
+    statusPath
+    token
+  }
+}

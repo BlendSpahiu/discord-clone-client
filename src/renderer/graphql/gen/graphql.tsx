@@ -31,6 +31,19 @@ export type Scalars = {
   timestamptz: { input: any; output: any };
 };
 
+/** Boolean expression to compare columns of type "Boolean". All fields are combined with logical 'AND'. */
+export type Boolean_Comparison_Exp = {
+  _eq?: InputMaybe<Scalars['Boolean']['input']>;
+  _gt?: InputMaybe<Scalars['Boolean']['input']>;
+  _gte?: InputMaybe<Scalars['Boolean']['input']>;
+  _in?: InputMaybe<Array<Scalars['Boolean']['input']>>;
+  _is_null?: InputMaybe<Scalars['Boolean']['input']>;
+  _lt?: InputMaybe<Scalars['Boolean']['input']>;
+  _lte?: InputMaybe<Scalars['Boolean']['input']>;
+  _neq?: InputMaybe<Scalars['Boolean']['input']>;
+  _nin?: InputMaybe<Array<Scalars['Boolean']['input']>>;
+};
+
 /** Boolean expression to compare columns of type "Int". All fields are combined with logical 'AND'. */
 export type Int_Comparison_Exp = {
   _eq?: InputMaybe<Scalars['Int']['input']>;
@@ -42,6 +55,31 @@ export type Int_Comparison_Exp = {
   _lte?: InputMaybe<Scalars['Int']['input']>;
   _neq?: InputMaybe<Scalars['Int']['input']>;
   _nin?: InputMaybe<Array<Scalars['Int']['input']>>;
+};
+
+export type LoginOutput = {
+  __typename?: 'LoginOutput';
+  statusCode: Scalars['Int']['output'];
+  statusIsOk: Scalars['Boolean']['output'];
+  statusMessage: Scalars['String']['output'];
+  statusPath: Scalars['String']['output'];
+  token: Scalars['String']['output'];
+};
+
+export type RegisterInput = {
+  date_of_birth: Scalars['String']['input'];
+  email: Scalars['String']['input'];
+  password: Scalars['String']['input'];
+  username: Scalars['String']['input'];
+};
+
+export type RegisterOutput = {
+  __typename?: 'RegisterOutput';
+  statusCode: Scalars['Int']['output'];
+  statusIsOk: Scalars['Boolean']['output'];
+  statusMessage: Scalars['String']['output'];
+  statusPath: Scalars['String']['output'];
+  token: Scalars['String']['output'];
 };
 
 /** Boolean expression to compare columns of type "String". All fields are combined with logical 'AND'. */
@@ -96,6 +134,10 @@ export type Mutation_Root = {
   insert_users?: Maybe<Users_Mutation_Response>;
   /** insert a single row into the table: "users" */
   insert_users_one?: Maybe<Users>;
+  /** login */
+  login?: Maybe<LoginOutput>;
+  /** register */
+  register?: Maybe<RegisterOutput>;
   /** update data of the table: "users" */
   update_users?: Maybe<Users_Mutation_Response>;
   /** update single row of the table: "users" */
@@ -124,6 +166,17 @@ export type Mutation_RootInsert_UsersArgs = {
 export type Mutation_RootInsert_Users_OneArgs = {
   object: Users_Insert_Input;
   on_conflict?: InputMaybe<Users_On_Conflict>;
+};
+
+/** mutation root */
+export type Mutation_RootLoginArgs = {
+  email: Scalars['String']['input'];
+  password: Scalars['String']['input'];
+};
+
+/** mutation root */
+export type Mutation_RootRegisterArgs = {
+  obj?: InputMaybe<RegisterInput>;
 };
 
 /** mutation root */
@@ -249,10 +302,12 @@ export type Users = {
   date_of_birth: Scalars['String']['output'];
   email?: Maybe<Scalars['String']['output']>;
   id: Scalars['Int']['output'];
-  nickname: Scalars['String']['output'];
+  isDisabled?: Maybe<Scalars['Boolean']['output']>;
+  nickname?: Maybe<Scalars['String']['output']>;
   password: Scalars['String']['output'];
-  profile_picture: Scalars['String']['output'];
-  role: Scalars['String']['output'];
+  phone_number?: Maybe<Scalars['String']['output']>;
+  profile_picture?: Maybe<Scalars['String']['output']>;
+  server_role?: Maybe<Scalars['String']['output']>;
   tag: Scalars['Int']['output'];
   updated_at: Scalars['timestamptz']['output'];
   username: Scalars['String']['output'];
@@ -303,10 +358,12 @@ export type Users_Bool_Exp = {
   date_of_birth?: InputMaybe<String_Comparison_Exp>;
   email?: InputMaybe<String_Comparison_Exp>;
   id?: InputMaybe<Int_Comparison_Exp>;
+  isDisabled?: InputMaybe<Boolean_Comparison_Exp>;
   nickname?: InputMaybe<String_Comparison_Exp>;
   password?: InputMaybe<String_Comparison_Exp>;
+  phone_number?: InputMaybe<String_Comparison_Exp>;
   profile_picture?: InputMaybe<String_Comparison_Exp>;
-  role?: InputMaybe<String_Comparison_Exp>;
+  server_role?: InputMaybe<String_Comparison_Exp>;
   tag?: InputMaybe<Int_Comparison_Exp>;
   updated_at?: InputMaybe<Timestamptz_Comparison_Exp>;
   username?: InputMaybe<String_Comparison_Exp>;
@@ -330,10 +387,12 @@ export type Users_Insert_Input = {
   date_of_birth?: InputMaybe<Scalars['String']['input']>;
   email?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['Int']['input']>;
+  isDisabled?: InputMaybe<Scalars['Boolean']['input']>;
   nickname?: InputMaybe<Scalars['String']['input']>;
   password?: InputMaybe<Scalars['String']['input']>;
+  phone_number?: InputMaybe<Scalars['String']['input']>;
   profile_picture?: InputMaybe<Scalars['String']['input']>;
-  role?: InputMaybe<Scalars['String']['input']>;
+  server_role?: InputMaybe<Scalars['String']['input']>;
   tag?: InputMaybe<Scalars['Int']['input']>;
   updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
   username?: InputMaybe<Scalars['String']['input']>;
@@ -348,8 +407,9 @@ export type Users_Max_Fields = {
   id?: Maybe<Scalars['Int']['output']>;
   nickname?: Maybe<Scalars['String']['output']>;
   password?: Maybe<Scalars['String']['output']>;
+  phone_number?: Maybe<Scalars['String']['output']>;
   profile_picture?: Maybe<Scalars['String']['output']>;
-  role?: Maybe<Scalars['String']['output']>;
+  server_role?: Maybe<Scalars['String']['output']>;
   tag?: Maybe<Scalars['Int']['output']>;
   updated_at?: Maybe<Scalars['timestamptz']['output']>;
   username?: Maybe<Scalars['String']['output']>;
@@ -364,8 +424,9 @@ export type Users_Min_Fields = {
   id?: Maybe<Scalars['Int']['output']>;
   nickname?: Maybe<Scalars['String']['output']>;
   password?: Maybe<Scalars['String']['output']>;
+  phone_number?: Maybe<Scalars['String']['output']>;
   profile_picture?: Maybe<Scalars['String']['output']>;
-  role?: Maybe<Scalars['String']['output']>;
+  server_role?: Maybe<Scalars['String']['output']>;
   tag?: Maybe<Scalars['Int']['output']>;
   updated_at?: Maybe<Scalars['timestamptz']['output']>;
   username?: Maybe<Scalars['String']['output']>;
@@ -393,10 +454,12 @@ export type Users_Order_By = {
   date_of_birth?: InputMaybe<Order_By>;
   email?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  isDisabled?: InputMaybe<Order_By>;
   nickname?: InputMaybe<Order_By>;
   password?: InputMaybe<Order_By>;
+  phone_number?: InputMaybe<Order_By>;
   profile_picture?: InputMaybe<Order_By>;
-  role?: InputMaybe<Order_By>;
+  server_role?: InputMaybe<Order_By>;
   tag?: InputMaybe<Order_By>;
   updated_at?: InputMaybe<Order_By>;
   username?: InputMaybe<Order_By>;
@@ -418,13 +481,17 @@ export enum Users_Select_Column {
   /** column name */
   Id = 'id',
   /** column name */
+  IsDisabled = 'isDisabled',
+  /** column name */
   Nickname = 'nickname',
   /** column name */
   Password = 'password',
   /** column name */
+  PhoneNumber = 'phone_number',
+  /** column name */
   ProfilePicture = 'profile_picture',
   /** column name */
-  Role = 'role',
+  ServerRole = 'server_role',
   /** column name */
   Tag = 'tag',
   /** column name */
@@ -439,10 +506,12 @@ export type Users_Set_Input = {
   date_of_birth?: InputMaybe<Scalars['String']['input']>;
   email?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['Int']['input']>;
+  isDisabled?: InputMaybe<Scalars['Boolean']['input']>;
   nickname?: InputMaybe<Scalars['String']['input']>;
   password?: InputMaybe<Scalars['String']['input']>;
+  phone_number?: InputMaybe<Scalars['String']['input']>;
   profile_picture?: InputMaybe<Scalars['String']['input']>;
-  role?: InputMaybe<Scalars['String']['input']>;
+  server_role?: InputMaybe<Scalars['String']['input']>;
   tag?: InputMaybe<Scalars['Int']['input']>;
   updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
   username?: InputMaybe<Scalars['String']['input']>;
@@ -483,10 +552,12 @@ export type Users_Stream_Cursor_Value_Input = {
   date_of_birth?: InputMaybe<Scalars['String']['input']>;
   email?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['Int']['input']>;
+  isDisabled?: InputMaybe<Scalars['Boolean']['input']>;
   nickname?: InputMaybe<Scalars['String']['input']>;
   password?: InputMaybe<Scalars['String']['input']>;
+  phone_number?: InputMaybe<Scalars['String']['input']>;
   profile_picture?: InputMaybe<Scalars['String']['input']>;
-  role?: InputMaybe<Scalars['String']['input']>;
+  server_role?: InputMaybe<Scalars['String']['input']>;
   tag?: InputMaybe<Scalars['Int']['input']>;
   updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
   username?: InputMaybe<Scalars['String']['input']>;
@@ -510,13 +581,17 @@ export enum Users_Update_Column {
   /** column name */
   Id = 'id',
   /** column name */
+  IsDisabled = 'isDisabled',
+  /** column name */
   Nickname = 'nickname',
   /** column name */
   Password = 'password',
   /** column name */
+  PhoneNumber = 'phone_number',
+  /** column name */
   ProfilePicture = 'profile_picture',
   /** column name */
-  Role = 'role',
+  ServerRole = 'server_role',
   /** column name */
   Tag = 'tag',
   /** column name */
@@ -554,16 +629,74 @@ export type Users_Variance_Fields = {
   tag?: Maybe<Scalars['Float']['output']>;
 };
 
-export type UserFragmentFragment = {
+export type UserFragment = {
   __typename?: 'users';
   id: number;
   username: string;
-  nickname: string;
-  role: string;
+  nickname?: string | null;
+  server_role?: string | null;
   tag: number;
   email?: string | null;
+  phone_number?: string | null;
   date_of_birth: string;
   created_at: any;
+  isDisabled?: boolean | null;
+  updated_at: any;
+};
+
+export type LoginMutationVariables = Exact<{
+  email: Scalars['String']['input'];
+  password: Scalars['String']['input'];
+}>;
+
+export type LoginMutation = {
+  __typename?: 'mutation_root';
+  login?: {
+    __typename?: 'LoginOutput';
+    statusCode: number;
+    statusIsOk: boolean;
+    statusMessage: string;
+    statusPath: string;
+    token: string;
+  } | null;
+};
+
+export type RegisterMutationVariables = Exact<{
+  obj: RegisterInput;
+}>;
+
+export type RegisterMutation = {
+  __typename?: 'mutation_root';
+  register?: {
+    __typename?: 'RegisterOutput';
+    statusCode: number;
+    statusIsOk: boolean;
+    statusMessage: string;
+    statusPath: string;
+    token: string;
+  } | null;
+};
+
+export type GetMeQueryVariables = Exact<{
+  id: Scalars['Int']['input'];
+}>;
+
+export type GetMeQuery = {
+  __typename?: 'query_root';
+  users_by_pk?: {
+    __typename?: 'users';
+    id: number;
+    username: string;
+    nickname?: string | null;
+    server_role?: string | null;
+    tag: number;
+    email?: string | null;
+    phone_number?: string | null;
+    date_of_birth: string;
+    created_at: any;
+    isDisabled?: boolean | null;
+    updated_at: any;
+  } | null;
 };
 
 export type GetUsersQueryVariables = Exact<{ [key: string]: never }>;
@@ -574,34 +707,192 @@ export type GetUsersQuery = {
     __typename?: 'users';
     id: number;
     username: string;
-    nickname: string;
-    role: string;
+    nickname?: string | null;
+    server_role?: string | null;
     tag: number;
     email?: string | null;
+    phone_number?: string | null;
     date_of_birth: string;
     created_at: any;
+    isDisabled?: boolean | null;
+    updated_at: any;
   }>;
 };
 
-export const UserFragmentFragmentDoc = gql`
-  fragment UserFragment on users {
+export const UserFragmentDoc = gql`
+  fragment User on users {
     id
     username
     nickname
-    role
+    server_role
     tag
     email
+    phone_number
     date_of_birth
     created_at
+    isDisabled
+    updated_at
   }
 `;
+export const LoginDocument = gql`
+  mutation login($email: String!, $password: String!) {
+    login(email: $email, password: $password) {
+      statusCode
+      statusIsOk
+      statusMessage
+      statusPath
+      token
+    }
+  }
+`;
+export type LoginMutationFn = Apollo.MutationFunction<
+  LoginMutation,
+  LoginMutationVariables
+>;
+
+/**
+ * __useLoginMutation__
+ *
+ * To run a mutation, you first call `useLoginMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useLoginMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [loginMutation, { data, loading, error }] = useLoginMutation({
+ *   variables: {
+ *      email: // value for 'email'
+ *      password: // value for 'password'
+ *   },
+ * });
+ */
+export function useLoginMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    LoginMutation,
+    LoginMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<LoginMutation, LoginMutationVariables>(
+    LoginDocument,
+    options
+  );
+}
+export type LoginMutationHookResult = ReturnType<typeof useLoginMutation>;
+export type LoginMutationResult = Apollo.MutationResult<LoginMutation>;
+export type LoginMutationOptions = Apollo.BaseMutationOptions<
+  LoginMutation,
+  LoginMutationVariables
+>;
+export const RegisterDocument = gql`
+  mutation register($obj: RegisterInput!) {
+    register(obj: $obj) {
+      statusCode
+      statusIsOk
+      statusMessage
+      statusPath
+      token
+    }
+  }
+`;
+export type RegisterMutationFn = Apollo.MutationFunction<
+  RegisterMutation,
+  RegisterMutationVariables
+>;
+
+/**
+ * __useRegisterMutation__
+ *
+ * To run a mutation, you first call `useRegisterMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRegisterMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [registerMutation, { data, loading, error }] = useRegisterMutation({
+ *   variables: {
+ *      obj: // value for 'obj'
+ *   },
+ * });
+ */
+export function useRegisterMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    RegisterMutation,
+    RegisterMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<RegisterMutation, RegisterMutationVariables>(
+    RegisterDocument,
+    options
+  );
+}
+export type RegisterMutationHookResult = ReturnType<typeof useRegisterMutation>;
+export type RegisterMutationResult = Apollo.MutationResult<RegisterMutation>;
+export type RegisterMutationOptions = Apollo.BaseMutationOptions<
+  RegisterMutation,
+  RegisterMutationVariables
+>;
+export const GetMeDocument = gql`
+  query getMe($id: Int!) {
+    users_by_pk(id: $id) {
+      ...User
+    }
+  }
+  ${UserFragmentDoc}
+`;
+
+/**
+ * __useGetMeQuery__
+ *
+ * To run a query within a React component, call `useGetMeQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetMeQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetMeQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetMeQuery(
+  baseOptions: Apollo.QueryHookOptions<GetMeQuery, GetMeQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<GetMeQuery, GetMeQueryVariables>(
+    GetMeDocument,
+    options
+  );
+}
+export function useGetMeLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<GetMeQuery, GetMeQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<GetMeQuery, GetMeQueryVariables>(
+    GetMeDocument,
+    options
+  );
+}
+export type GetMeQueryHookResult = ReturnType<typeof useGetMeQuery>;
+export type GetMeLazyQueryHookResult = ReturnType<typeof useGetMeLazyQuery>;
+export type GetMeQueryResult = Apollo.QueryResult<
+  GetMeQuery,
+  GetMeQueryVariables
+>;
 export const GetUsersDocument = gql`
   query getUsers {
     users {
-      ...UserFragment
+      ...User
     }
   }
-  ${UserFragmentFragmentDoc}
+  ${UserFragmentDoc}
 `;
 
 /**

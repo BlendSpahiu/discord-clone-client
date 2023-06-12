@@ -10,21 +10,19 @@ export const wsClient = new SubscriptionClient(
   {
     reconnect: true,
     lazy: true,
-    // connectionParams: () => {
-    //   // fetch token
-    //   const token = readAuthToken();
-    //   let headers = {};
-    //   if (token) {
-    //     headers = {
-    //       'x-hasura-role': getHasuraUserRole(token),
-    //       'x-hasura-user-id': getHasuraUserId(token),
-    //       Authorization: `Bearer ${token}`,
-    //     };
-    //   }
-    //   return {
-    //     headers,
-    //   };
-    // },
+    connectionParams: () => {
+      // fetch token
+      const token = localStorage.getItem('access_token');
+      let headers = {};
+      if (token) {
+        headers = {
+          Authorization: `Bearer ${token}`,
+        };
+      }
+      return {
+        headers,
+      };
+    },
   }
 );
 

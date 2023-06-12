@@ -49,17 +49,17 @@ export const Register = (): ReactElement => {
   const handleSetDayOfBirth = (value: string) => () => {
     setDayOfBirth(value);
     setDayMenu(false);
-    setValue('dateOfBirth', `${value}/${monthOfBirth}/${yearOfBirth}`);
+    setValue('date_of_birth', `${value}/${monthOfBirth}/${yearOfBirth}`);
   };
   const handleSetMonthOfBirth = (value: string) => () => {
     setMonthOfBirth(value);
     setMonthMenu(false);
-    setValue('dateOfBirth', `${dayOfBirth}/${value}/${yearOfBirth}`);
+    setValue('date_of_birth', `${dayOfBirth}/${value}/${yearOfBirth}`);
   };
   const handleSetYearOfBirth = (value: string) => () => {
     setYearOfBirth(value);
     setYearMenu(false);
-    setValue('dateOfBirth', `${dayOfBirth}/${monthOfBirth}/${value}`);
+    setValue('date_of_birth', `${dayOfBirth}/${monthOfBirth}/${value}`);
   };
   const handleToggleMenu = (value: number) => () => {
     switch (value) {
@@ -77,7 +77,7 @@ export const Register = (): ReactElement => {
     }
   };
 
-  console.log(errors, getValues('dateOfBirth'));
+  console.log(errors, getValues('date_of_birth'));
 
   const onSubmit = async (data: RegisterModel) => {
     console.log(data);
@@ -234,7 +234,7 @@ export const Register = (): ReactElement => {
               </DropdownMenu>
             </Dropdown>
           </Container>
-          {errors.dateOfBirth && <FieldError error={errors.dateOfBirth} />}
+          {errors.date_of_birth && <FieldError error={errors.date_of_birth} />}
         </Container>
         <Button style={{ marginTop: 24 }} type="submit">
           Continue
