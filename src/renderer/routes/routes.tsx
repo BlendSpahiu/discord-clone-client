@@ -9,7 +9,7 @@ export const router = createHashRouter([
   { path: '/', element: <Navigate to="/auth/register" /> },
   {
     path: '/auth/register',
-    element: <Register />,
+    element: <Login />,
   },
   {
     path: '/auth/login',

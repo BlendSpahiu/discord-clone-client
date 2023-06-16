@@ -19,8 +19,10 @@ import { RegisterModel } from '../../interfaces/interfaces/Register.props';
 import { AuthResponseModel } from '../../interfaces/models/Response.model';
 import { days, months, years } from '../../static/date/date';
 import { RegisterValidator } from '../../validators/Auth/Auth.validator';
+import { AuthProps } from './Auth.props';
+import { AnimatePresence } from 'framer-motion';
 
-export const Register = (): ReactElement => {
+export const Register = ({ onClick }: AuthProps): ReactElement => {
   const [dayOfBirth, setDayOfBirth] = useState<string>('');
   const [monthOfBirth, setMonthOfBirth] = useState<string>('');
   const [yearOfBirth, setYearOfBirth] = useState<string>('');
@@ -97,165 +99,172 @@ export const Register = (): ReactElement => {
   document.body.classList.add('bg-image');
 
   return (
-    <Container
-      key="register"
-      animatePresence
-      className="register"
-      flex
-      size="sm"
-      flexDirection="col"
-      justifyContent="center"
-      spacing="xl"
-      style={{ boxShadow: '0px 0px 12px 2px rgba(0, 0, 0, 0.6)' }}
-      // initial={{}}
-      animate={{ x: [-500, 40, 0] }}
-      exit={{ x: 500 }}
-      transition={{ duration: 0.3 }}
-    >
-      <Typography
-        as="h2"
-        color="white"
-        style={{ marginBottom: 24, textAlign: 'center' }}
+    <AnimatePresence>
+      <Container
+        key="register"
+        className="register"
+        flex
+        size="sm"
+        flexDirection="col"
+        justifyContent="center"
+        spacing="xl"
+        style={{ boxShadow: '0px 0px 12px 2px rgba(0, 0, 0, 0.6)' }}
+        initial={{}}
+        animate={{ x: [-500, 40, 0] }}
+        exit={{ x: 900 }}
+        transition={{ duration: 0.3 }}
       >
-        Create an account
-      </Typography>
-      <Form onSubmit={handleSubmit(onSubmit)}>
-        <Container spacing="none" spaceBetween="lg" spaceDirection="y">
-          <InputGroup
-            containerClassName="full-width"
-            inputProps={{
-              type: 'email',
-              fullWidth: true,
-              id: 'email',
-              name: 'email',
-              register,
-              autoComplete: 'email',
-            }}
-            labelProps={{ label: 'Email', htmlFor: 'email' }}
-            error={errors.email}
-          />
-          <InputGroup
-            containerClassName="full-width"
-            inputProps={{
-              type: 'text',
-              fullWidth: true,
-              id: 'username',
-              name: 'username',
-              register,
-            }}
-            labelProps={{ label: 'Username', htmlFor: 'username' }}
-            error={errors.username}
-          />
-          <InputGroup
-            containerClassName="full-width"
-            inputProps={{
-              type: 'password',
-              fullWidth: true,
-              id: 'password',
-              name: 'password',
-              register,
-            }}
-            labelProps={{ label: 'Password', htmlFor: 'password' }}
-            error={errors.password}
-          />
-        </Container>
-        <Container
-          flex
-          flexDirection="col"
-          spacing="none"
-          style={{ marginTop: 24 }}
+        <Typography
+          as="h2"
+          color="white"
+          style={{ marginBottom: 24, textAlign: 'center' }}
         >
-          <Label>Date of birth</Label>
+          Create an account
+        </Typography>
+        <Form onSubmit={handleSubmit(onSubmit)}>
+          <Container spacing="none" spaceBetween="lg" spaceDirection="y">
+            <InputGroup
+              containerClassName="full-width"
+              inputProps={{
+                type: 'email',
+                fullWidth: true,
+                id: 'email',
+                name: 'email',
+                register,
+                autoComplete: 'email',
+              }}
+              labelProps={{ label: 'Email', htmlFor: 'email' }}
+              error={errors.email}
+            />
+            <InputGroup
+              containerClassName="full-width"
+              inputProps={{
+                type: 'text',
+                fullWidth: true,
+                id: 'username',
+                name: 'username',
+                register,
+              }}
+              labelProps={{ label: 'Username', htmlFor: 'username' }}
+              error={errors.username}
+            />
+            <InputGroup
+              containerClassName="full-width"
+              inputProps={{
+                type: 'password',
+                fullWidth: true,
+                id: 'password',
+                name: 'password',
+                register,
+              }}
+              labelProps={{ label: 'Password', htmlFor: 'password' }}
+              error={errors.password}
+            />
+          </Container>
           <Container
             flex
-            flexDirection="row"
-            justifyContent="space-between"
+            flexDirection="col"
             spacing="none"
-            spaceBetween="md"
-            spaceDirection="x"
+            style={{ marginTop: 24 }}
           >
-            <Dropdown ref={dayRef} fullWidth onClose={() => setDayMenu(false)}>
-              <DropdownTrigger onShow={handleToggleMenu(1)}>
-                {dayOfBirth ? dayOfBirth : 'Day'}
-              </DropdownTrigger>
-              <DropdownMenu isOpen={dayMenu}>
-                {days.map((day) => (
-                  <DropdownItem
-                    key={day.value}
-                    buttonProps={{ color: 'secondary', variant: 'text' }}
-                    onItemClick={handleSetDayOfBirth(day.value)}
-                  >
-                    {day.label}
-                  </DropdownItem>
-                ))}
-              </DropdownMenu>
-            </Dropdown>
-            <Dropdown
-              ref={monthRef}
-              fullWidth
-              onClose={() => setMonthMenu(false)}
+            <Label>Date of birth</Label>
+            <Container
+              flex
+              flexDirection="row"
+              justifyContent="space-between"
+              spacing="none"
+              spaceBetween="md"
+              spaceDirection="x"
             >
-              <DropdownTrigger onShow={handleToggleMenu(2)}>
-                {months.find((month) => month.value === monthOfBirth)?.label ||
-                  'Month'}
-              </DropdownTrigger>
-              <DropdownMenu isOpen={monthMenu}>
-                {months.map((month) => (
-                  <DropdownItem
-                    key={month.value}
-                    buttonProps={{ color: 'secondary', variant: 'text' }}
-                    onItemClick={handleSetMonthOfBirth(month.value)}
-                  >
-                    {month.label}
-                  </DropdownItem>
-                ))}
-              </DropdownMenu>
-            </Dropdown>
-            <Dropdown
-              ref={yearRef}
-              fullWidth
-              onClose={() => setYearMenu(false)}
-            >
-              <DropdownTrigger onShow={handleToggleMenu(3)}>
-                {yearOfBirth ? yearOfBirth : 'Year'}
-              </DropdownTrigger>
-              <DropdownMenu isOpen={yearMenu}>
-                {years
-                  .map((year) => (
+              <Dropdown
+                ref={dayRef}
+                fullWidth
+                onClose={() => setDayMenu(false)}
+              >
+                <DropdownTrigger onShow={handleToggleMenu(1)}>
+                  {dayOfBirth ? dayOfBirth : 'Day'}
+                </DropdownTrigger>
+                <DropdownMenu isOpen={dayMenu}>
+                  {days.map((day) => (
                     <DropdownItem
-                      key={year.value}
+                      key={day.value}
                       buttonProps={{ color: 'secondary', variant: 'text' }}
-                      onItemClick={handleSetYearOfBirth(year.value)}
+                      onItemClick={handleSetDayOfBirth(day.value)}
                     >
-                      {year.label}
+                      {day.label}
                     </DropdownItem>
-                  ))
-                  .reverse()}
-              </DropdownMenu>
-            </Dropdown>
+                  ))}
+                </DropdownMenu>
+              </Dropdown>
+              <Dropdown
+                ref={monthRef}
+                fullWidth
+                onClose={() => setMonthMenu(false)}
+              >
+                <DropdownTrigger onShow={handleToggleMenu(2)}>
+                  {months.find((month) => month.value === monthOfBirth)
+                    ?.label || 'Month'}
+                </DropdownTrigger>
+                <DropdownMenu isOpen={monthMenu}>
+                  {months.map((month) => (
+                    <DropdownItem
+                      key={month.value}
+                      buttonProps={{ color: 'secondary', variant: 'text' }}
+                      onItemClick={handleSetMonthOfBirth(month.value)}
+                    >
+                      {month.label}
+                    </DropdownItem>
+                  ))}
+                </DropdownMenu>
+              </Dropdown>
+              <Dropdown
+                ref={yearRef}
+                fullWidth
+                onClose={() => setYearMenu(false)}
+              >
+                <DropdownTrigger onShow={handleToggleMenu(3)}>
+                  {yearOfBirth ? yearOfBirth : 'Year'}
+                </DropdownTrigger>
+                <DropdownMenu isOpen={yearMenu}>
+                  {years
+                    .map((year) => (
+                      <DropdownItem
+                        key={year.value}
+                        buttonProps={{ color: 'secondary', variant: 'text' }}
+                        onItemClick={handleSetYearOfBirth(year.value)}
+                      >
+                        {year.label}
+                      </DropdownItem>
+                    ))
+                    .reverse()}
+                </DropdownMenu>
+              </Dropdown>
+            </Container>
+            {errors.date_of_birth && (
+              <FieldError error={errors.date_of_birth} />
+            )}
           </Container>
-          {errors.date_of_birth && <FieldError error={errors.date_of_birth} />}
-        </Container>
-        <Button style={{ marginTop: 24 }} type="submit">
-          Continue
-        </Button>
-        <Link style={{ marginTop: 12 }} to="/auth/login">
-          Already have an account?
-        </Link>
-        <Typography
-          style={{
-            marginTop: 24,
-            fontSize: 12,
-            fontWeight: 400,
-            color: 'lightgray',
-            opacity: 0.8,
-          }}
-          as="p"
-        >
-          By registring, you agree to this clone's Terms of Service and Privacy
-          Policy.
-        </Typography>
-      </Form>
-    </Container>
+          <Button style={{ marginTop: 24 }} type="submit">
+            Continue
+          </Button>
+          <Link style={{ marginTop: 12 }} to="/auth/login">
+            Already have an account?
+          </Link>
+          <Typography
+            style={{
+              marginTop: 24,
+              fontSize: 12,
+              fontWeight: 400,
+              color: 'lightgray',
+              opacity: 0.8,
+            }}
+            as="p"
+          >
+            By registring, you agree to this clone's Terms of Service and
+            Privacy Policy.
+          </Typography>
+        </Form>
+      </Container>
+    </AnimatePresence>
   );
 };

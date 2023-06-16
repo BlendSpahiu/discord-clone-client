@@ -1,7 +1,7 @@
 import { ReactElement } from 'react';
-import { ContainerProps } from './Container.props';
 import classNames from 'classnames';
-import { AnimatePresence, motion } from 'framer-motion';
+import { motion } from 'framer-motion';
+import { ContainerProps } from './Container.props';
 import './Container.css';
 
 export const Container = ({
@@ -15,56 +15,26 @@ export const Container = ({
   spaceDirection = 'none',
   className,
   styling = true,
-  animatePresence = false,
   alignItems,
   ...rest
 }: ContainerProps): ReactElement => {
   return (
-    <>
-      {animatePresence && (
-        <AnimatePresence>
-          <motion.div
-            className={classNames(
-              styling ? 'container' : '',
-              spacing ? `container-spacing-${spacing}` : '',
-              flex ? 'container-flex' : '',
-              flexDirection ? `container-flex-${flexDirection}` : '',
-              justifyContent ? `justify-content-${justifyContent}` : '',
-              size ? `container-${size}` : '',
-              spaceBetween
-                ? `space-between-${spaceDirection}-${spaceBetween}`
-                : '',
-              alignItems ? `align-items-${alignItems}` : '',
-              className
-            )}
-            {...rest}
-          >
-            {children}
-          </motion.div>
-        </AnimatePresence>
-      )}
+    <motion.div
+      className={classNames(
+        styling ? 'container' : '',
+        spacing ? `container-spacing-${spacing}` : '',
+        flex ? 'container-flex' : '',
+        flexDirection ? `container-flex-${flexDirection}` : '',
+        justifyContent ? `justify-content-${justifyContent}` : '',
+        size ? `container-${size}` : '',
+        spaceBetween ? `space-between-${spaceDirection}-${spaceBetween}` : '',
+        alignItems ? `align-items-${alignItems}` : '',
 
-      {!animatePresence && (
-        <motion.div
-          className={classNames(
-            styling ? 'container' : '',
-            spacing ? `container-spacing-${spacing}` : '',
-            flex ? 'container-flex' : '',
-            flexDirection ? `container-flex-${flexDirection}` : '',
-            justifyContent ? `justify-content-${justifyContent}` : '',
-            size ? `container-${size}` : '',
-            spaceBetween
-              ? `space-between-${spaceDirection}-${spaceBetween}`
-              : '',
-            alignItems ? `align-items-${alignItems}` : '',
-
-            className
-          )}
-          {...rest}
-        >
-          {children}
-        </motion.div>
+        className
       )}
-    </>
+      {...rest}
+    >
+      {children}
+    </motion.div>
   );
 };

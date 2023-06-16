@@ -1,7 +1,7 @@
-import { ReactElement } from "react";
-import { DropdownItemProps } from "./Dropdown.props";
-import classNames from "classnames";
-import { motion } from "framer-motion";
+import { ReactElement } from 'react';
+import { DropdownItemProps } from './Dropdown.props';
+import classNames from 'classnames';
+import { motion } from 'framer-motion';
 
 export const DropdownItem = ({
   children,
@@ -9,7 +9,7 @@ export const DropdownItem = ({
   ...rest
 }: DropdownItemProps): ReactElement => {
   return (
-    <div className={classNames("dropdown-item")} {...rest}>
+    <div className={classNames('dropdown-item')} {...rest}>
       <motion.button
         onClick={onItemClick}
         className="button-text button-text-secondary full-width"

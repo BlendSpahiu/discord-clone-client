@@ -1,7 +1,7 @@
-import { ReactElement } from "react";
-import { DropdownMenuProps } from "./Dropdown.props";
-import classNames from "classnames";
-import { motion } from "framer-motion";
+import { ReactElement } from 'react';
+import { DropdownMenuProps } from './Dropdown.props';
+import classNames from 'classnames';
+import { AnimatePresence, motion } from 'framer-motion';
 
 export const DropdownMenu = ({
   isOpen,
@@ -21,7 +21,7 @@ export const DropdownMenu = ({
     open: {
       scale: 1,
       transition: {
-        type: "spring",
+        type: 'spring',
         duration: 0.4,
         delayChildren: 0.1,
         staggerChildren: 0.05,
@@ -30,18 +30,18 @@ export const DropdownMenu = ({
   };
 
   return (
-    <>
+    <AnimatePresence>
       {isOpen && (
         <div {...rest}>
           <motion.div
             className={classNames(
-              "dropdown-menu",
+              'dropdown-menu',
               spaceBetween && spacing
                 ? `space-between-${spaceBetween}-${spacing}`
-                : "",
+                : '',
               className
             )}
-            animate={isOpen ? "open" : "closed"}
+            animate={isOpen ? 'open' : 'closed'}
             initial="closed"
             exit="closed"
             variants={menu}
@@ -50,6 +50,6 @@ export const DropdownMenu = ({
           </motion.div>
         </div>
       )}
-    </>
+    </AnimatePresence>
   );
 };
