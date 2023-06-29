@@ -28,6 +28,7 @@ export type Scalars = {
   Boolean: { input: boolean; output: boolean };
   Int: { input: number; output: number };
   Float: { input: number; output: number };
+  jsonb: { input: any; output: any };
   timestamptz: { input: any; output: any };
 };
 
@@ -55,6 +56,11 @@ export type Int_Comparison_Exp = {
   _lte?: InputMaybe<Scalars['Int']['input']>;
   _neq?: InputMaybe<Scalars['Int']['input']>;
   _nin?: InputMaybe<Array<Scalars['Int']['input']>>;
+};
+
+export type LoginInput = {
+  email: Scalars['String']['input'];
+  password: Scalars['String']['input'];
 };
 
 export type LoginOutput = {
@@ -123,6 +129,34 @@ export enum Cursor_Ordering {
   Desc = 'DESC',
 }
 
+export type Jsonb_Cast_Exp = {
+  String?: InputMaybe<String_Comparison_Exp>;
+};
+
+/** Boolean expression to compare columns of type "jsonb". All fields are combined with logical 'AND'. */
+export type Jsonb_Comparison_Exp = {
+  _cast?: InputMaybe<Jsonb_Cast_Exp>;
+  /** is the column contained in the given json value */
+  _contained_in?: InputMaybe<Scalars['jsonb']['input']>;
+  /** does the column contain the given json value at the top level */
+  _contains?: InputMaybe<Scalars['jsonb']['input']>;
+  _eq?: InputMaybe<Scalars['jsonb']['input']>;
+  _gt?: InputMaybe<Scalars['jsonb']['input']>;
+  _gte?: InputMaybe<Scalars['jsonb']['input']>;
+  /** does the string exist as a top-level key in the column */
+  _has_key?: InputMaybe<Scalars['String']['input']>;
+  /** do all of these strings exist as top-level keys in the column */
+  _has_keys_all?: InputMaybe<Array<Scalars['String']['input']>>;
+  /** do any of these strings exist as top-level keys in the column */
+  _has_keys_any?: InputMaybe<Array<Scalars['String']['input']>>;
+  _in?: InputMaybe<Array<Scalars['jsonb']['input']>>;
+  _is_null?: InputMaybe<Scalars['Boolean']['input']>;
+  _lt?: InputMaybe<Scalars['jsonb']['input']>;
+  _lte?: InputMaybe<Scalars['jsonb']['input']>;
+  _neq?: InputMaybe<Scalars['jsonb']['input']>;
+  _nin?: InputMaybe<Array<Scalars['jsonb']['input']>>;
+};
+
 /** mutation root */
 export type Mutation_Root = {
   __typename?: 'mutation_root';
@@ -170,25 +204,34 @@ export type Mutation_RootInsert_Users_OneArgs = {
 
 /** mutation root */
 export type Mutation_RootLoginArgs = {
-  email: Scalars['String']['input'];
-  password: Scalars['String']['input'];
+  obj: LoginInput;
 };
 
 /** mutation root */
 export type Mutation_RootRegisterArgs = {
-  obj?: InputMaybe<RegisterInput>;
+  obj: RegisterInput;
 };
 
 /** mutation root */
 export type Mutation_RootUpdate_UsersArgs = {
+  _append?: InputMaybe<Users_Append_Input>;
+  _delete_at_path?: InputMaybe<Users_Delete_At_Path_Input>;
+  _delete_elem?: InputMaybe<Users_Delete_Elem_Input>;
+  _delete_key?: InputMaybe<Users_Delete_Key_Input>;
   _inc?: InputMaybe<Users_Inc_Input>;
+  _prepend?: InputMaybe<Users_Prepend_Input>;
   _set?: InputMaybe<Users_Set_Input>;
   where: Users_Bool_Exp;
 };
 
 /** mutation root */
 export type Mutation_RootUpdate_Users_By_PkArgs = {
+  _append?: InputMaybe<Users_Append_Input>;
+  _delete_at_path?: InputMaybe<Users_Delete_At_Path_Input>;
+  _delete_elem?: InputMaybe<Users_Delete_Elem_Input>;
+  _delete_key?: InputMaybe<Users_Delete_Key_Input>;
   _inc?: InputMaybe<Users_Inc_Input>;
+  _prepend?: InputMaybe<Users_Prepend_Input>;
   _set?: InputMaybe<Users_Set_Input>;
   pk_columns: Users_Pk_Columns_Input;
 };
@@ -300,17 +343,29 @@ export type Users = {
   __typename?: 'users';
   created_at: Scalars['timestamptz']['output'];
   date_of_birth: Scalars['String']['output'];
-  email?: Maybe<Scalars['String']['output']>;
+  display_name?: Maybe<Scalars['String']['output']>;
+  email: Scalars['String']['output'];
+  friends?: Maybe<Scalars['jsonb']['output']>;
   id: Scalars['Int']['output'];
-  isDisabled?: Maybe<Scalars['Boolean']['output']>;
-  nickname?: Maybe<Scalars['String']['output']>;
+  is_disabled?: Maybe<Scalars['Boolean']['output']>;
+  messages?: Maybe<Scalars['jsonb']['output']>;
   password: Scalars['String']['output'];
   phone_number?: Maybe<Scalars['String']['output']>;
   profile_picture?: Maybe<Scalars['String']['output']>;
-  server_role?: Maybe<Scalars['String']['output']>;
+  status: Scalars['String']['output'];
   tag: Scalars['Int']['output'];
   updated_at: Scalars['timestamptz']['output'];
   username: Scalars['String']['output'];
+};
+
+/** columns and relationships of "users" */
+export type UsersFriendsArgs = {
+  path?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** columns and relationships of "users" */
+export type UsersMessagesArgs = {
+  path?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** aggregated selection of "users" */
@@ -342,6 +397,12 @@ export type Users_Aggregate_FieldsCountArgs = {
   distinct?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
+/** append existing jsonb value of filtered columns with new jsonb value */
+export type Users_Append_Input = {
+  friends?: InputMaybe<Scalars['jsonb']['input']>;
+  messages?: InputMaybe<Scalars['jsonb']['input']>;
+};
+
 /** aggregate avg on columns */
 export type Users_Avg_Fields = {
   __typename?: 'users_avg_fields';
@@ -356,14 +417,16 @@ export type Users_Bool_Exp = {
   _or?: InputMaybe<Array<Users_Bool_Exp>>;
   created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
   date_of_birth?: InputMaybe<String_Comparison_Exp>;
+  display_name?: InputMaybe<String_Comparison_Exp>;
   email?: InputMaybe<String_Comparison_Exp>;
+  friends?: InputMaybe<Jsonb_Comparison_Exp>;
   id?: InputMaybe<Int_Comparison_Exp>;
-  isDisabled?: InputMaybe<Boolean_Comparison_Exp>;
-  nickname?: InputMaybe<String_Comparison_Exp>;
+  is_disabled?: InputMaybe<Boolean_Comparison_Exp>;
+  messages?: InputMaybe<Jsonb_Comparison_Exp>;
   password?: InputMaybe<String_Comparison_Exp>;
   phone_number?: InputMaybe<String_Comparison_Exp>;
   profile_picture?: InputMaybe<String_Comparison_Exp>;
-  server_role?: InputMaybe<String_Comparison_Exp>;
+  status?: InputMaybe<String_Comparison_Exp>;
   tag?: InputMaybe<Int_Comparison_Exp>;
   updated_at?: InputMaybe<Timestamptz_Comparison_Exp>;
   username?: InputMaybe<String_Comparison_Exp>;
@@ -375,6 +438,24 @@ export enum Users_Constraint {
   UsersPkey = 'users_pkey',
 }
 
+/** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
+export type Users_Delete_At_Path_Input = {
+  friends?: InputMaybe<Array<Scalars['String']['input']>>;
+  messages?: InputMaybe<Array<Scalars['String']['input']>>;
+};
+
+/** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
+export type Users_Delete_Elem_Input = {
+  friends?: InputMaybe<Scalars['Int']['input']>;
+  messages?: InputMaybe<Scalars['Int']['input']>;
+};
+
+/** delete key/value pair or string element. key/value pairs are matched based on their key value */
+export type Users_Delete_Key_Input = {
+  friends?: InputMaybe<Scalars['String']['input']>;
+  messages?: InputMaybe<Scalars['String']['input']>;
+};
+
 /** input type for incrementing numeric columns in table "users" */
 export type Users_Inc_Input = {
   id?: InputMaybe<Scalars['Int']['input']>;
@@ -385,14 +466,16 @@ export type Users_Inc_Input = {
 export type Users_Insert_Input = {
   created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   date_of_birth?: InputMaybe<Scalars['String']['input']>;
+  display_name?: InputMaybe<Scalars['String']['input']>;
   email?: InputMaybe<Scalars['String']['input']>;
+  friends?: InputMaybe<Scalars['jsonb']['input']>;
   id?: InputMaybe<Scalars['Int']['input']>;
-  isDisabled?: InputMaybe<Scalars['Boolean']['input']>;
-  nickname?: InputMaybe<Scalars['String']['input']>;
+  is_disabled?: InputMaybe<Scalars['Boolean']['input']>;
+  messages?: InputMaybe<Scalars['jsonb']['input']>;
   password?: InputMaybe<Scalars['String']['input']>;
   phone_number?: InputMaybe<Scalars['String']['input']>;
   profile_picture?: InputMaybe<Scalars['String']['input']>;
-  server_role?: InputMaybe<Scalars['String']['input']>;
+  status?: InputMaybe<Scalars['String']['input']>;
   tag?: InputMaybe<Scalars['Int']['input']>;
   updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
   username?: InputMaybe<Scalars['String']['input']>;
@@ -403,13 +486,13 @@ export type Users_Max_Fields = {
   __typename?: 'users_max_fields';
   created_at?: Maybe<Scalars['timestamptz']['output']>;
   date_of_birth?: Maybe<Scalars['String']['output']>;
+  display_name?: Maybe<Scalars['String']['output']>;
   email?: Maybe<Scalars['String']['output']>;
   id?: Maybe<Scalars['Int']['output']>;
-  nickname?: Maybe<Scalars['String']['output']>;
   password?: Maybe<Scalars['String']['output']>;
   phone_number?: Maybe<Scalars['String']['output']>;
   profile_picture?: Maybe<Scalars['String']['output']>;
-  server_role?: Maybe<Scalars['String']['output']>;
+  status?: Maybe<Scalars['String']['output']>;
   tag?: Maybe<Scalars['Int']['output']>;
   updated_at?: Maybe<Scalars['timestamptz']['output']>;
   username?: Maybe<Scalars['String']['output']>;
@@ -420,13 +503,13 @@ export type Users_Min_Fields = {
   __typename?: 'users_min_fields';
   created_at?: Maybe<Scalars['timestamptz']['output']>;
   date_of_birth?: Maybe<Scalars['String']['output']>;
+  display_name?: Maybe<Scalars['String']['output']>;
   email?: Maybe<Scalars['String']['output']>;
   id?: Maybe<Scalars['Int']['output']>;
-  nickname?: Maybe<Scalars['String']['output']>;
   password?: Maybe<Scalars['String']['output']>;
   phone_number?: Maybe<Scalars['String']['output']>;
   profile_picture?: Maybe<Scalars['String']['output']>;
-  server_role?: Maybe<Scalars['String']['output']>;
+  status?: Maybe<Scalars['String']['output']>;
   tag?: Maybe<Scalars['Int']['output']>;
   updated_at?: Maybe<Scalars['timestamptz']['output']>;
   username?: Maybe<Scalars['String']['output']>;
@@ -452,14 +535,16 @@ export type Users_On_Conflict = {
 export type Users_Order_By = {
   created_at?: InputMaybe<Order_By>;
   date_of_birth?: InputMaybe<Order_By>;
+  display_name?: InputMaybe<Order_By>;
   email?: InputMaybe<Order_By>;
+  friends?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
-  isDisabled?: InputMaybe<Order_By>;
-  nickname?: InputMaybe<Order_By>;
+  is_disabled?: InputMaybe<Order_By>;
+  messages?: InputMaybe<Order_By>;
   password?: InputMaybe<Order_By>;
   phone_number?: InputMaybe<Order_By>;
   profile_picture?: InputMaybe<Order_By>;
-  server_role?: InputMaybe<Order_By>;
+  status?: InputMaybe<Order_By>;
   tag?: InputMaybe<Order_By>;
   updated_at?: InputMaybe<Order_By>;
   username?: InputMaybe<Order_By>;
@@ -470,6 +555,12 @@ export type Users_Pk_Columns_Input = {
   id: Scalars['Int']['input'];
 };
 
+/** prepend existing jsonb value of filtered columns with new jsonb value */
+export type Users_Prepend_Input = {
+  friends?: InputMaybe<Scalars['jsonb']['input']>;
+  messages?: InputMaybe<Scalars['jsonb']['input']>;
+};
+
 /** select columns of table "users" */
 export enum Users_Select_Column {
   /** column name */
@@ -477,13 +568,17 @@ export enum Users_Select_Column {
   /** column name */
   DateOfBirth = 'date_of_birth',
   /** column name */
+  DisplayName = 'display_name',
+  /** column name */
   Email = 'email',
+  /** column name */
+  Friends = 'friends',
   /** column name */
   Id = 'id',
   /** column name */
-  IsDisabled = 'isDisabled',
+  IsDisabled = 'is_disabled',
   /** column name */
-  Nickname = 'nickname',
+  Messages = 'messages',
   /** column name */
   Password = 'password',
   /** column name */
@@ -491,7 +586,7 @@ export enum Users_Select_Column {
   /** column name */
   ProfilePicture = 'profile_picture',
   /** column name */
-  ServerRole = 'server_role',
+  Status = 'status',
   /** column name */
   Tag = 'tag',
   /** column name */
@@ -504,14 +599,16 @@ export enum Users_Select_Column {
 export type Users_Set_Input = {
   created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   date_of_birth?: InputMaybe<Scalars['String']['input']>;
+  display_name?: InputMaybe<Scalars['String']['input']>;
   email?: InputMaybe<Scalars['String']['input']>;
+  friends?: InputMaybe<Scalars['jsonb']['input']>;
   id?: InputMaybe<Scalars['Int']['input']>;
-  isDisabled?: InputMaybe<Scalars['Boolean']['input']>;
-  nickname?: InputMaybe<Scalars['String']['input']>;
+  is_disabled?: InputMaybe<Scalars['Boolean']['input']>;
+  messages?: InputMaybe<Scalars['jsonb']['input']>;
   password?: InputMaybe<Scalars['String']['input']>;
   phone_number?: InputMaybe<Scalars['String']['input']>;
   profile_picture?: InputMaybe<Scalars['String']['input']>;
-  server_role?: InputMaybe<Scalars['String']['input']>;
+  status?: InputMaybe<Scalars['String']['input']>;
   tag?: InputMaybe<Scalars['Int']['input']>;
   updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
   username?: InputMaybe<Scalars['String']['input']>;
@@ -550,14 +647,16 @@ export type Users_Stream_Cursor_Input = {
 export type Users_Stream_Cursor_Value_Input = {
   created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   date_of_birth?: InputMaybe<Scalars['String']['input']>;
+  display_name?: InputMaybe<Scalars['String']['input']>;
   email?: InputMaybe<Scalars['String']['input']>;
+  friends?: InputMaybe<Scalars['jsonb']['input']>;
   id?: InputMaybe<Scalars['Int']['input']>;
-  isDisabled?: InputMaybe<Scalars['Boolean']['input']>;
-  nickname?: InputMaybe<Scalars['String']['input']>;
+  is_disabled?: InputMaybe<Scalars['Boolean']['input']>;
+  messages?: InputMaybe<Scalars['jsonb']['input']>;
   password?: InputMaybe<Scalars['String']['input']>;
   phone_number?: InputMaybe<Scalars['String']['input']>;
   profile_picture?: InputMaybe<Scalars['String']['input']>;
-  server_role?: InputMaybe<Scalars['String']['input']>;
+  status?: InputMaybe<Scalars['String']['input']>;
   tag?: InputMaybe<Scalars['Int']['input']>;
   updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
   username?: InputMaybe<Scalars['String']['input']>;
@@ -577,13 +676,17 @@ export enum Users_Update_Column {
   /** column name */
   DateOfBirth = 'date_of_birth',
   /** column name */
+  DisplayName = 'display_name',
+  /** column name */
   Email = 'email',
+  /** column name */
+  Friends = 'friends',
   /** column name */
   Id = 'id',
   /** column name */
-  IsDisabled = 'isDisabled',
+  IsDisabled = 'is_disabled',
   /** column name */
-  Nickname = 'nickname',
+  Messages = 'messages',
   /** column name */
   Password = 'password',
   /** column name */
@@ -591,7 +694,7 @@ export enum Users_Update_Column {
   /** column name */
   ProfilePicture = 'profile_picture',
   /** column name */
-  ServerRole = 'server_role',
+  Status = 'status',
   /** column name */
   Tag = 'tag',
   /** column name */
@@ -601,8 +704,18 @@ export enum Users_Update_Column {
 }
 
 export type Users_Updates = {
+  /** append existing jsonb value of filtered columns with new jsonb value */
+  _append?: InputMaybe<Users_Append_Input>;
+  /** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
+  _delete_at_path?: InputMaybe<Users_Delete_At_Path_Input>;
+  /** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
+  _delete_elem?: InputMaybe<Users_Delete_Elem_Input>;
+  /** delete key/value pair or string element. key/value pairs are matched based on their key value */
+  _delete_key?: InputMaybe<Users_Delete_Key_Input>;
   /** increments the numeric columns with given value of the filtered values */
   _inc?: InputMaybe<Users_Inc_Input>;
+  /** prepend existing jsonb value of filtered columns with new jsonb value */
+  _prepend?: InputMaybe<Users_Prepend_Input>;
   /** sets the columns of the filtered rows to the given values */
   _set?: InputMaybe<Users_Set_Input>;
   where: Users_Bool_Exp;
@@ -633,20 +746,21 @@ export type UserFragment = {
   __typename?: 'users';
   id: number;
   username: string;
-  nickname?: string | null;
-  server_role?: string | null;
   tag: number;
-  email?: string | null;
+  email: string;
   phone_number?: string | null;
+  display_name?: string | null;
+  is_disabled?: boolean | null;
+  profile_picture?: string | null;
+  status: string;
+  friends?: any | null;
+  messages?: any | null;
   date_of_birth: string;
   created_at: any;
-  isDisabled?: boolean | null;
-  updated_at: any;
 };
 
 export type LoginMutationVariables = Exact<{
-  email: Scalars['String']['input'];
-  password: Scalars['String']['input'];
+  obj: LoginInput;
 }>;
 
 export type LoginMutation = {
@@ -687,15 +801,17 @@ export type GetMeQuery = {
     __typename?: 'users';
     id: number;
     username: string;
-    nickname?: string | null;
-    server_role?: string | null;
     tag: number;
-    email?: string | null;
+    email: string;
     phone_number?: string | null;
+    display_name?: string | null;
+    is_disabled?: boolean | null;
+    profile_picture?: string | null;
+    status: string;
+    friends?: any | null;
+    messages?: any | null;
     date_of_birth: string;
     created_at: any;
-    isDisabled?: boolean | null;
-    updated_at: any;
   } | null;
 };
 
@@ -707,15 +823,17 @@ export type GetUsersQuery = {
     __typename?: 'users';
     id: number;
     username: string;
-    nickname?: string | null;
-    server_role?: string | null;
     tag: number;
-    email?: string | null;
+    email: string;
     phone_number?: string | null;
+    display_name?: string | null;
+    is_disabled?: boolean | null;
+    profile_picture?: string | null;
+    status: string;
+    friends?: any | null;
+    messages?: any | null;
     date_of_birth: string;
     created_at: any;
-    isDisabled?: boolean | null;
-    updated_at: any;
   }>;
 };
 
@@ -723,20 +841,23 @@ export const UserFragmentDoc = gql`
   fragment User on users {
     id
     username
-    nickname
-    server_role
     tag
     email
     phone_number
+    display_name
+    is_disabled
+    profile_picture
+    status
+    tag
+    friends
+    messages
     date_of_birth
     created_at
-    isDisabled
-    updated_at
   }
 `;
 export const LoginDocument = gql`
-  mutation login($email: String!, $password: String!) {
-    login(email: $email, password: $password) {
+  mutation login($obj: LoginInput!) {
+    login(obj: $obj) {
       statusCode
       statusIsOk
       statusMessage
@@ -763,8 +884,7 @@ export type LoginMutationFn = Apollo.MutationFunction<
  * @example
  * const [loginMutation, { data, loading, error }] = useLoginMutation({
  *   variables: {
- *      email: // value for 'email'
- *      password: // value for 'password'
+ *      obj: // value for 'obj'
  *   },
  * });
  */

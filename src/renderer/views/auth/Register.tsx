@@ -1,7 +1,8 @@
 import { ReactElement, useRef, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { joiResolver } from '@hookform/resolvers/joi';
+import { AnimatePresence } from 'framer-motion';
 import { signUp } from '../../api/auth/auth';
 import { Label, Typography } from '../../components';
 import { Button } from '../../components/common/Button/Button';
@@ -14,13 +15,14 @@ import { Form } from '../../components/common/Form/Form';
 import { FieldError } from '../../components/common/Forms/FieldError/FieldError';
 import { InputGroup } from '../../components/common/Input/InputGroup';
 import { Link } from '../../components/common/Link/Link';
+import { ToastrEnums } from '../../enums/toaster/Toaster.enums';
+import { useRegisterMutation } from '../../graphql/gen/graphql';
 import { useToast } from '../../hooks/useToast/useToast';
 import { RegisterModel } from '../../interfaces/interfaces/Register.props';
 import { AuthResponseModel } from '../../interfaces/models/Response.model';
 import { days, months, years } from '../../static/date/date';
 import { RegisterValidator } from '../../validators/Auth/Auth.validator';
 import { AuthProps } from './Auth.props';
-import { AnimatePresence } from 'framer-motion';
 
 export const Register = ({ onClick }: AuthProps): ReactElement => {
   const [dayOfBirth, setDayOfBirth] = useState<string>('');
@@ -35,17 +37,29 @@ export const Register = ({ onClick }: AuthProps): ReactElement => {
   const yearRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const { addToast } = useToast();
-  const { pathname } = useLocation();
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-    getValues,
     setValue,
   } = useForm<RegisterModel>({
     reValidateMode: 'onChange',
     resolver: joiResolver(RegisterValidator()),
+  });
+
+  const [registerUser, { loading }] = useRegisterMutation({
+    onCompleted: (data) => {
+      localStorage.setItem('access_token', data.register?.token || '');
+    },
+    onError: (error) => {
+      console.log(error);
+      addToast({
+        title: 'Something went wrong!',
+        type: ToastrEnums.ERROR,
+        description: error.graphQLErrors[0].message,
+      });
+    },
   });
 
   const handleSetDayOfBirth = (value: string) => () => {
@@ -79,20 +93,17 @@ export const Register = ({ onClick }: AuthProps): ReactElement => {
     }
   };
 
-  console.log(errors, getValues('date_of_birth'));
-
-  const onSubmit = async (data: RegisterModel) => {
-    console.log(data);
-    const res = await signUp(data);
-    if (!res.statusIsOk) {
-      return;
-    }
-
-    localStorage.setItem('access_token', (res as AuthResponseModel).token);
-    localStorage.setItem(
-      'access_token',
-      (res as AuthResponseModel).user.id.toString()
-    );
+  const onSubmit = (data: RegisterModel) => {
+    registerUser({
+      variables: {
+        obj: {
+          email: data.email || '',
+          username: data.username || '',
+          password: data.password || '',
+          date_of_birth: data.date_of_birth || '',
+        },
+      },
+    });
     navigate('/main');
   };
 
@@ -101,6 +112,7 @@ export const Register = ({ onClick }: AuthProps): ReactElement => {
   return (
     <AnimatePresence>
       <Container
+        layout
         key="register"
         className="register"
         flex
@@ -124,6 +136,7 @@ export const Register = ({ onClick }: AuthProps): ReactElement => {
         <Form onSubmit={handleSubmit(onSubmit)}>
           <Container spacing="none" spaceBetween="lg" spaceDirection="y">
             <InputGroup
+              required
               containerClassName="full-width"
               inputProps={{
                 type: 'email',
@@ -137,6 +150,7 @@ export const Register = ({ onClick }: AuthProps): ReactElement => {
               error={errors.email}
             />
             <InputGroup
+              required
               containerClassName="full-width"
               inputProps={{
                 type: 'text',
@@ -149,6 +163,7 @@ export const Register = ({ onClick }: AuthProps): ReactElement => {
               error={errors.username}
             />
             <InputGroup
+              required
               containerClassName="full-width"
               inputProps={{
                 type: 'password',
@@ -167,7 +182,20 @@ export const Register = ({ onClick }: AuthProps): ReactElement => {
             spacing="none"
             style={{ marginTop: 24 }}
           >
-            <Label>Date of birth</Label>
+            <Label>
+              Date of birth{' '}
+              <span
+                style={{
+                  color: 'red',
+                  fontSize: 10,
+                  marginLeft: 4,
+                  position: 'relative',
+                  bottom: 4,
+                }}
+              >
+                *
+              </span>
+            </Label>
             <Container
               flex
               flexDirection="row"
@@ -244,7 +272,7 @@ export const Register = ({ onClick }: AuthProps): ReactElement => {
               <FieldError error={errors.date_of_birth} />
             )}
           </Container>
-          <Button style={{ marginTop: 24 }} type="submit">
+          <Button loading={loading} style={{ marginTop: 24 }} type="submit">
             Continue
           </Button>
           <Link style={{ marginTop: 12 }} to="/auth/login">

@@ -9,11 +9,19 @@ export const router = createHashRouter([
   { path: '/', element: <Navigate to="/auth/register" /> },
   {
     path: '/auth/register',
-    element: <Login />,
+    element: (
+      <AuthProvider>
+        <Register />
+      </AuthProvider>
+    ),
   },
   {
     path: '/auth/login',
-    element: <Login />,
+    element: (
+      <AuthProvider>
+        <Login />
+      </AuthProvider>
+    ),
   },
   {
     path: '/main',

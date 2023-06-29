@@ -1,13 +1,16 @@
 fragment User on users {
   id
   username
-  nickname
-  server_role
   tag
   email
   phone_number
+  display_name
+  is_disabled
+  profile_picture
+  status
+  tag
+  friends
+  messages
   date_of_birth
   created_at
-  isDisabled
-  updated_at
 }

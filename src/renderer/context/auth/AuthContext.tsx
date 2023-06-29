@@ -11,6 +11,7 @@ import { useGetMeLazyQuery, UserFragment } from '../../graphql/gen/graphql';
 import { useToast } from '../../hooks/useToast/useToast';
 import { Nullable } from '../../interfaces/types/Nullable';
 import { AuthContextProps } from './AuthContext.props';
+import { getHasuraUserId } from '../../utils/auth/jwt/getHasuraUserId';
 
 export const AuthContext = createContext<AuthContextProps>({
   user: null,
@@ -34,7 +35,6 @@ export const AuthProvider = ({
     navigate('/auth/login');
   };
 
-  const userId = localStorage.getItem('user_id');
   const [getAuthUser, { loading: gqlLoading }] = useGetMeLazyQuery({
     onError: (error) => {
       addToast({
@@ -42,18 +42,27 @@ export const AuthProvider = ({
         type: ToastrEnums.ERROR,
         description: error.message,
       });
+      setLoading(false);
       navigate('/auth/login');
     },
     onCompleted: (data) => {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      setUser(data?.users_by_pk);
+      setUser(data);
+      setLoading(false);
     },
-    variables: { id: Number(userId) },
   });
 
   useLayoutEffect(() => {
-    getAuthUser();
+    const token = localStorage.getItem('access_token');
+    if (!token) {
+      navigate('/auth/login');
+      return;
+    }
+    const userId = getHasuraUserId(token || '');
+
+    setLoading(true);
+    getAuthUser({ variables: { id: Number(userId) } });
   }, []);
 
   return (
